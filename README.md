@@ -1,4 +1,4 @@
-# CC-BY-SA-4.0_Music
+# Creative4Music
 
 ## Who is this music intended for?
 Indie game developers, content creators, educators, really anyone who wants to use some music and\or get some inspiration.
