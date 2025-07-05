@@ -28,5 +28,5 @@ If you use any of the tracks, please credit as follows:
 Licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
 ## Do I have to pay for anything?
-Nope, all the music is free to download. If you would like to make a donation so I can look to expand with more tools\hosting etc, that would be appreciated.
+Nope, all the music is free to download. If you would like to sponsor the proejct, so I can look to expand with more tools\hosting etc, that would be appreciated.
 
