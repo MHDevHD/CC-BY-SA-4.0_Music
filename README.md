@@ -7,7 +7,7 @@ Indie game developers, content creators, educators, really anyone who wants to u
 Mixture of using AI tools, coding and actually making the music.
 
 ## File Format
-Files are in MP3 Format, due to size restrictions on GitHub. They will also be made available in WAV format, although the file sizes are too large for GitHub so they would have to be hosted somewhere else.
+Files are in MP3 Format, due to size restrictions on GitHub. They will also be made available in WAV format.
 
 ## License
 All music in this repository is licensed under the  
