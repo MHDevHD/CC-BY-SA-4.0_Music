@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Creative4Music MP3 Player</title>
+  <title>Creative4Music Music Player</title>
   <style>
     body { font-family: sans-serif; padding: 20px; }
     audio { display: block; margin: 10px 0; width: 100%; }
@@ -21,9 +21,12 @@
     const folderSelect = document.getElementById('folderSelect');
     const playerArea = document.getElementById('playerArea');
 
+    let manifestData = {};
+
     fetch('manifest.json')
       .then(res => res.json())
       .then(data => {
+        manifestData = data;
         folderSelect.innerHTML = '<option value="">-- Select Folder --</option>';
         for (const folder in data) {
           const option = document.createElement('option');
@@ -31,25 +34,25 @@
           option.textContent = folder;
           folderSelect.appendChild(option);
         }
-
-        folderSelect.addEventListener('change', () => {
-          const selected = folderSelect.value;
-          playerArea.innerHTML = '';
-
-          if (selected && data[selected]) {
-            data[selected].forEach(file => {
-              const audio = document.createElement('audio');
-              audio.controls = true;
-              audio.src = `${selected}/${file}`;
-              playerArea.appendChild(audio);
-            });
-          }
-        });
       })
       .catch(err => {
-        folderSelect.innerHTML = '<option>Error loading manifest</option>';
-        console.error('Failed to load manifest:', err);
+        console.error('Failed to load manifest.json:', err);
+        folderSelect.innerHTML = '<option>Error loading</option>';
       });
+
+    folderSelect.addEventListener('change', function () {
+      const folder = this.value;
+      playerArea.innerHTML = ''; // Clear previous tracks
+
+      if (folder && manifestData[folder]) {
+        manifestData[folder].forEach(file => {
+          const audio = document.createElement('audio');
+          audio.controls = true;
+          audio.src = `${folder}/${file}`;
+          playerArea.appendChild(audio);
+        });
+      }
+    });
   </script>
 </body>
 </html>
