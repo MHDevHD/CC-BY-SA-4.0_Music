@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Creative4Music Music Player</title>
+  <title>Creative Commons Music Player</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    audio { display: block; margin: 10px 0; width: 100%; }
+    body { font-family: sans-serif; padding: 20px; background: #f8f8f8; }
+    h1 { margin-bottom: 10px; }
+    select { padding: 5px; }
+    audio { display: block; margin: 10px 0; width: 100%; max-width: 500px; }
   </style>
 </head>
 <body>
-  <h1>Creative4Music Music Player</h1>
-  <label for="folderSelect">Choose a folder:</label>
+  <h1>Creative Commons Music Player</h1>
+  <label for="folderSelect">Choose a Genre:</label>
   <select id="folderSelect">
     <option value="">-- Loading... --</option>
   </select>
@@ -20,38 +22,47 @@
   <script>
     const folderSelect = document.getElementById('folderSelect');
     const playerArea = document.getElementById('playerArea');
+    let manifest = {};
 
-    let manifestData = {};
-
+    // Load manifest.json
     fetch('manifest.json')
-      .then(res => res.json())
+      .then(response => {
+        if (!response.ok) throw new Error("Failed to fetch manifest.json");
+        return response.json();
+      })
       .then(data => {
-        manifestData = data;
-        folderSelect.innerHTML = '<option value="">-- Select Folder --</option>';
-        for (const folder in data) {
-          const option = document.createElement('option');
-          option.value = folder;
-          option.textContent = folder;
-          folderSelect.appendChild(option);
-        }
+        manifest = data;
+        folderSelect.innerHTML = '<option value="">-- Select Genre --</option>';
+        Object.keys(manifest).forEach(folder => {
+          const opt = document.createElement('option');
+          opt.value = folder;
+          opt.textContent = folder;
+          folderSelect.appendChild(opt);
+        });
       })
       .catch(err => {
-        console.error('Failed to load manifest.json:', err);
-        folderSelect.innerHTML = '<option>Error loading</option>';
+        console.error(err);
+        folderSelect.innerHTML = '<option value="">Error loading manifest</option>';
       });
 
     folderSelect.addEventListener('change', function () {
       const folder = this.value;
-      playerArea.innerHTML = ''; // Clear previous tracks
+      playerArea.innerHTML = '';
 
-      if (folder && manifestData[folder]) {
-        manifestData[folder].forEach(file => {
-          const audio = document.createElement('audio');
-          audio.controls = true;
-          audio.src = `${folder}/${file}`;
-          playerArea.appendChild(audio);
-        });
-      }
+      if (!folder || !manifest[folder]) return;
+
+      manifest[folder].forEach(filename => {
+        const audio = document.createElement('audio');
+        audio.controls = true;
+
+        // Encode spaces and special characters in file names
+        const encodedFilename = encodeURIComponent(filename);
+        const src = `${folder}/${encodedFilename}`;
+
+        audio.src = src;
+        audio.textContent = `Your browser does not support audio for ${filename}`;
+        playerArea.appendChild(audio);
+      });
     });
   </script>
 </body>
